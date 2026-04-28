@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Task Manager</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main>
+      <section id="auth-view" class="auth-view hidden">
+        <div class="auth-copy">
+          <p class="eyebrow">Student Workspace</p>
+          <h1>Plan your week. Finish the work.</h1>
+          <p>Track assignments, organize courses, and keep every deadline connected to your own private account.</p>
+        </div>
+
+        <section class="auth-card">
+          <div class="tabs">
+            <button id="show-login" class="tab active" type="button">Sign In</button>
+            <button id="show-register" class="tab" type="button">Create Account</button>
+          </div>
+
+          <form id="login-form" class="auth-form">
+            <label><span>Email</span><input id="login-email" type="email" required /></label>
+            <label><span>Password</span><input id="login-password" type="password" required /></label>
+            <button type="submit">Sign In</button>
+            <p class="demo-note">Demo account: demo@student.local / demo1234</p>
+          </form>
+
+          <form id="register-form" class="auth-form hidden">
+            <label><span>Name</span><input id="register-name" type="text" required /></label>
+            <label><span>Email</span><input id="register-email" type="email" required /></label>
+            <label><span>Password</span><input id="register-password" type="password" minlength="6" required /></label>
+            <button type="submit">Create Account</button>
+          </form>
+
+          <p id="auth-message" class="message" role="status"></p>
+        </section>
+      </section>
+
+      <section id="app-view" class="app-shell hidden">
+        <aside class="sidebar">
+          <div class="brand">ST</div>
+          <nav>
+            <a class="active" href="#overview">Overview</a>
+            <a href="#tasks">Tasks</a>
+            <a href="#courses">Courses</a>
+          </nav>
+          <button id="logout-button" class="ghost-button" type="button">Sign Out</button>
+        </aside>
+
+        <section class="workspace">
+          <header class="topbar">
+            <div>
+              <p class="eyebrow">Dashboard</p>
+              <h1>Student Task Manager</h1>
+              <p id="welcome-text"></p>
+            </div>
+            <div class="top-actions">
+              <section class="top-progress" aria-label="Task progress">
+                <div class="progress-ring compact" id="progress-ring">
+                  <div>
+                    <strong id="completion-percent">0%</strong>
+                    <span>complete</span>
+                  </div>
+                </div>
+                <div class="chart-legend compact">
+                  <span><i class="legend-done"></i>Done <strong id="legend-done">0</strong></span>
+                  <span><i class="legend-progress"></i>In progress <strong id="legend-progress">0</strong></span>
+                  <span><i class="legend-pending"></i>To do <strong id="legend-pending">0</strong></span>
+                </div>
+              </section>
+              <button id="open-task-panel" class="primary-button" type="button">New Task</button>
+            </div>
+          </header>
+
+          <section id="overview" class="stats-grid">
+            <article class="stat-card total"><span>Total Tasks</span><strong id="total-count">0</strong></article>
+            <article class="stat-card pending"><span>Pending</span><strong id="pending-count">0</strong></article>
+            <article class="stat-card progress-stat"><span>In Progress</span><strong id="inprogress-count">0</strong></article>
+            <article class="stat-card complete"><span>Completed</span><strong id="completed-count">0</strong></article>
+            <article class="stat-card danger"><span>Overdue</span><strong id="overdue-count">0</strong></article>
+            <article class="stat-card today"><span>Due Today</span><strong id="today-count">0</strong></article>
+          </section>
+
+          <section class="content-grid">
+            <section id="tasks" class="panel task-panel-main">
+              <div class="panel-heading">
+                <div>
+                  <h2>Priority Queue</h2>
+                  <p id="task-count-label">0 tasks</p>
+                </div>
+                <div class="view-tabs">
+                  <button class="filter-chip active" data-quick-filter="all" type="button">All</button>
+                  <button class="filter-chip" data-quick-filter="today" type="button">Today</button>
+                  <button class="filter-chip" data-quick-filter="overdue" type="button">Overdue</button>
+                  <button class="filter-chip" data-quick-filter="inprogress" type="button">In Progress</button>
+                </div>
+              </div>
+
+              <div class="toolbar">
+                <label><span>Search</span><input id="task-search" type="search" placeholder="Search title, course, or notes" /></label>
+                <label>
+                  <span>Status</span>
+                  <select id="status-filter">
+                    <option value="all">All</option>
+                    <option value="pending">Pending</option>
+                    <option value="inprogress">In Progress</option>
+                    <option value="done">Done</option>
+                  </select>
+                </label>
+                <label>
+                  <span>Priority</span>
+                  <select id="priority-filter">
+                    <option value="all">All</option>
+                    <option value="high">High</option>
+                    <option value="medium">Medium</option>
+                    <option value="low">Low</option>
+                  </select>
+                </label>
+              </div>
+
+              <p id="message" class="message board-message" role="status"></p>
+              <div id="task-list" class="task-list"></div>
+            </section>
+
+            <aside class="right-rail">
+              <section class="panel editor-panel">
+                <div class="panel-heading compact">
+                  <h2 id="form-title">Add Task</h2>
+                  <button id="close-task-panel" class="icon-button" type="button">Close</button>
+                </div>
+                <form id="task-form" class="task-form">
+                  <input id="task-id" type="hidden" />
+                  <label><span>Task Title</span><input id="task-title" type="text" required /></label>
+                  <label><span>Course</span><input id="task-course" type="text" placeholder="General" /></label>
+                  <label><span>Description</span><textarea id="task-description" rows="4" placeholder="Details, textbook pages, or submission notes"></textarea></label>
+                  <div class="form-row">
+                    <label><span>Due Date</span><input id="task-due-date" type="date" required /></label>
+                    <label>
+                      <span>Priority</span>
+                      <select id="task-priority">
+                        <option value="low">Low</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="high">High</option>
+                      </select>
+                    </label>
+                  </div>
+                  <label id="status-field" class="hidden">
+                    <span>Status</span>
+                    <select id="task-status">
+                      <option value="pending">Pending</option>
+                      <option value="inprogress">In Progress</option>
+                      <option value="done">Done</option>
+                    </select>
+                  </label>
+                  <div class="form-actions">
+                    <button id="submit-task-button" class="primary-button" type="submit">Add Task</button>
+                    <button id="cancel-edit-button" class="ghost-button hidden" type="button">Cancel</button>
+                  </div>
+                </form>
+              </section>
+
+              <section id="courses" class="panel">
+                <div class="panel-heading compact">
+                  <h2>Courses</h2>
+                </div>
+                <div id="course-summary" class="course-summary"></div>
+              </section>
+            </aside>
+          </section>
+        </section>
+      </section>
+    </main>
+
+    <template id="task-template">
+      <article class="task-card">
+        <div class="task-status-line"></div>
+        <div class="task-body">
+          <div class="task-main">
+            <div class="task-title-row">
+              <h3 class="task-title"></h3>
+              <span class="priority-badge"></span>
+            </div>
+            <p class="task-description"></p>
+            <div class="task-meta">
+              <span class="course-badge"></span>
+              <span class="due-badge"></span>
+              <span class="status-badge"></span>
+            </div>
+          </div>
+          <div class="task-actions">
+            <button class="toggle-button" type="button">Done</button>
+            <button class="edit-button" type="button">Edit</button>
+            <button class="delete-button" type="button">Delete</button>
+          </div>
+        </div>
+      </article>
+    </template>
+
+    <script src="/app.js" defer></script>
+  </body>
+</html>
