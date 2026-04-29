@@ -32,6 +32,10 @@ Open:
 http://127.0.0.1:8001
 ```
 
+## Documents
+Any documents related to this porject is on the Docs folders
+
+
 ## Reset Database
 
 Stop the server, delete `mvp_task_manager.db`, then run `python server.py` again.
