@@ -16,7 +16,7 @@ from urllib.parse import unquote, urlparse
 
 
 BASE_DIR = Path(__file__).resolve().parent
-STATIC_DIR = BASE_DIR / "static"
+SOURCE_DIR = BASE_DIR / "source"
 DB_PATH = BASE_DIR / "mvp_task_manager.db"
 SCHEMA_PATH = BASE_DIR / "schema.sql"
 HOST = "127.0.0.1"
@@ -267,8 +267,8 @@ class StudentTaskManagerHandler(BaseHTTPRequestHandler):
         self.wfile.write(encoded)
 
     def serve_static(self, requested_path: str, body: bool = True) -> None:
-        file_path = STATIC_DIR / "index.html" if requested_path == "/" else (STATIC_DIR / Path(unquote(requested_path.lstrip("/")))).resolve()
-        if STATIC_DIR.resolve() not in file_path.parents and file_path != STATIC_DIR.resolve():
+        file_path = SOURCE_DIR / "index.html" if requested_path == "/" else (SOURCE_DIR / Path(unquote(requested_path.lstrip("/")))).resolve()
+        if SOURCE_DIR.resolve() not in file_path.parents and file_path != SOURCE_DIR.resolve():
             self.send_error(HTTPStatus.FORBIDDEN, "Access denied.")
             return
         if not file_path.exists() or not file_path.is_file():

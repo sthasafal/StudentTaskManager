@@ -5,4 +5,7 @@ venv/
 .env
 *.log
 *.db-journal
+mvp_task_manager.db
+.edge-profile/
+login-page-screenshot.html
 ~$*.docx
